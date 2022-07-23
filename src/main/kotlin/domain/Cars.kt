@@ -7,4 +7,13 @@ class Cars(val value: List<Car>) {
             car.move()
         }
     }
+
+    fun getWinners() : List<Car> {
+        val maxPosition = value.stream()
+            .mapToInt { car -> car.position }
+            .max()
+            .orElseGet { 0 }
+
+        return value.filter { car -> car.position == maxPosition }
+    }
 }
