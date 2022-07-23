@@ -1,3 +1,3 @@
 package exception
 
-abstract class RacingCarException(message: String) : Throwable(message)
+abstract class RacingCarException(message: String) : RuntimeException(message)

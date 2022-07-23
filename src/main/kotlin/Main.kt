@@ -2,27 +2,42 @@ import domain.Car
 import domain.Cars
 import domain.RandomMoveStrategy
 import dto.RoundResult
+import exception.CarNameLengthException
 import view.InputView
 import view.OutputView
 
+val inputView = InputView()
+val outputView = OutputView()
+
 fun main(args: Array<String>) {
-    val inputView = InputView()
-    val outputView = OutputView()
+    val cars = initCars()
+    val round = inputRound()
 
-    val cars = initCars(inputView)
-    val round = inputView.inputRound()
-
-    playRound(outputView, round, cars)
-    printWinners(cars, outputView)
+    playRound(round, cars)
+    printWinners(cars)
 }
 
-private fun initCars(inputView: InputView): Cars {
+private fun initCars(): Cars {
     val carNames = inputView.inputCarNames()
-    val carsValue = carNames.map { carName -> Car(carName, RandomMoveStrategy()) }
-    return Cars(carsValue)
+    return try {
+        val carsValue = carNames.map { carName -> Car(carName, RandomMoveStrategy()) }
+        Cars(carsValue)
+    } catch (e: CarNameLengthException) {
+        outputView.printError(e.message)
+        initCars()
+    }
 }
 
-private fun playRound(outputView: OutputView, round: Int, cars: Cars) {
+private fun inputRound(): Int {
+    return try {
+        inputView.inputRound()
+    } catch (e: NumberFormatException) {
+        outputView.printError("아 숫자 입력하라고요")
+        inputRound()
+    }
+}
+
+private fun playRound(round: Int, cars: Cars) {
     outputView.printResultMessage()
     for (i: Int in 0..round) {
         cars.moveAll()
@@ -36,7 +51,7 @@ private fun extractRoundResults(cars: Cars) : List<RoundResult> {
         .map { car -> RoundResult(car.carName, car.position) }
 }
 
-private fun printWinners(cars: Cars, outputView: OutputView) {
+private fun printWinners(cars: Cars) {
     val winners = cars.getWinners()
     outputView.printWinners(winners.map { car -> car.carName })
 }
