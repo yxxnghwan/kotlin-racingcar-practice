@@ -48,10 +48,10 @@ private fun playRound(round: Int, cars: Cars) {
 
 private fun extractRoundResults(cars: Cars) : List<RoundResult> {
     return cars.value
-        .map { car -> RoundResult(car.carName, car.position) }
+        .map { car -> RoundResult(car.getCarName(), car.position) }
 }
 
 private fun printWinners(cars: Cars) {
     val winners = cars.getWinners()
-    outputView.printWinners(winners.map { car -> car.carName })
+    outputView.printWinners(winners.map { car -> car.getCarName() })
 }
