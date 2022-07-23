@@ -4,9 +4,11 @@ import exception.CarNameLengthException
 
 private const val MAX_CAR_NAME_LENGTH = 5
 
-class Car private constructor(carName: String, private var position: Int = 0) {
+class Car (val carName: String, private val moveStrategy: MoveStrategy) {
 
-    constructor(carName: String) : this(carName, 0)
+    var position: Int = 0
+    private set
+
 
     init {
         validateName(carName)
@@ -19,4 +21,10 @@ class Car private constructor(carName: String, private var position: Int = 0) {
     }
 
     private fun isInvalidCarNameLength(carName: String) = carName.isEmpty() || carName.length > MAX_CAR_NAME_LENGTH
+
+    fun move() {
+        if (moveStrategy.isMovable()) {
+            position++
+        }
+    }
 }
