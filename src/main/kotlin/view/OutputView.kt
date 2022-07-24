@@ -9,12 +9,12 @@ class OutputView {
     }
 
     fun printRoundResult(results: List<RoundResult>) {
-        results.forEach { result ->  println(result.carName + " : " + "-".repeat(result.position)) }
+        results.forEach { result -> println("${result.carName} : ${"-".repeat(result.position)}") }
         println()
     }
 
     fun printWinners(winnerNames: List<String>) {
-        println(winnerNames.joinToString(", ") + "가 최종 우승했습니다.")
+        println("${winnerNames.joinToString(", ")}가 최종 우승했습니다.")
     }
 
     fun printError(message: String?) {
